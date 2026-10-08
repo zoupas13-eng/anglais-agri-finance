@@ -1,0 +1,36 @@
+{
+  "name": "Agri-Finance English",
+  "short_name": "Agri-Fin EN",
+  "description": "Entraînement à l'anglais professionnel de l'agri-finance, des chaînes de valeur et de la coopération au développement.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EDF0EA",
+  "theme_color": "#16302B",
+  "lang": "fr",
+  "categories": [
+    "education",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

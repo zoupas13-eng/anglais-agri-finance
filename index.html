@@ -1,0 +1,505 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agri-Finance English</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#16302B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Agri-Finance EN">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{
+  --paper:#EDF0EA;
+  --paper-2:#FFFFFF;
+  --ink:#16302B;
+  --ink-soft:#54655F;
+  --line:#D2D9CE;
+  --viridian:#1F6F5C;
+  --viridian-dark:#154C40;
+  --millet:#C89B2C;
+  --alert:#A33328;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.45;
+  padding-bottom:calc(76px + env(safe-area-inset-bottom));
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:560px;margin:0 auto;padding:14px 16px 0}
+
+/* ---------- en-tête ---------- */
+.top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.top h1{font-family:var(--serif);font-size:19px;font-weight:600;margin:0;letter-spacing:-.2px}
+.top .sub{font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.09em}
+.gauge{font-variant-numeric:tabular-nums;font-size:12px;color:var(--ink-soft);white-space:nowrap}
+.gauge b{color:var(--viridian);font-size:15px}
+
+/* ---------- filtres ---------- */
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  flex:0 0 auto;border:1px solid var(--line);background:var(--paper-2);color:var(--ink-soft);
+  padding:7px 13px;border-radius:999px;font-size:12.5px;cursor:pointer;font-family:inherit;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+/* ---------- carte ---------- */
+.card{
+  background:var(--paper-2);border:1px solid var(--line);border-radius:14px;
+  padding:20px 18px;box-shadow:0 1px 0 rgba(22,48,43,.04);
+}
+.eyebrow{font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-soft)}
+.eyebrow .dot{color:var(--millet)}
+.fr{font-size:23px;line-height:1.25;font-weight:600;margin:12px 0 0;letter-spacing:-.3px}
+.en{font-family:var(--serif);font-size:27px;line-height:1.2;color:var(--viridian-dark);margin:14px 0 0}
+.ex{font-family:var(--serif);font-size:15.5px;color:var(--ink-soft);font-style:italic;margin:10px 0 0;border-left:2px solid var(--millet);padding-left:11px}
+.rule{height:1px;background:var(--line);margin:16px 0}
+
+/* ---------- boutons ---------- */
+.btn{
+  display:block;width:100%;border:0;border-radius:11px;padding:15px 14px;
+  font-family:inherit;font-size:15.5px;font-weight:600;cursor:pointer;
+  background:var(--viridian);color:#fff;transition:transform .08s;
+}
+.btn:active{transform:scale(.985)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.small{padding:11px;font-size:14px}
+.row{display:flex;gap:9px;margin-top:11px}
+.row .btn{flex:1}
+.btn.again{background:#fff;color:var(--alert);border:1.5px solid var(--alert)}
+.btn.good{background:var(--viridian)}
+.speak{
+  border:1px solid var(--line);background:var(--paper);border-radius:9px;
+  padding:8px 13px;font-family:inherit;font-size:13px;color:var(--ink-soft);cursor:pointer;margin-top:13px;
+}
+.speak:active{background:var(--line)}
+
+/* ---------- quiz ---------- */
+.opt{
+  display:block;width:100%;text-align:left;background:var(--paper-2);border:1px solid var(--line);
+  border-radius:11px;padding:14px 15px;margin-top:9px;font-family:var(--serif);font-size:17px;
+  color:var(--ink);cursor:pointer;
+}
+.opt.ok{border-color:var(--viridian);background:#E8F2EE;color:var(--viridian-dark);font-weight:600}
+.opt.ko{border-color:var(--alert);background:#F7EAE8;color:var(--alert);text-decoration:line-through}
+.verdict{font-size:13.5px;margin-top:14px;color:var(--ink-soft)}
+.verdict b{color:var(--ink)}
+
+/* ---------- saisie ---------- */
+input[type=text]{
+  width:100%;padding:14px;border:1px solid var(--line);border-radius:11px;
+  font-family:var(--serif);font-size:19px;background:var(--paper-2);color:var(--ink);margin-top:14px;
+}
+input[type=text]:focus{outline:2px solid var(--viridian);outline-offset:1px;border-color:transparent}
+
+/* ---------- pitch ---------- */
+.dial{position:relative;width:186px;height:186px;margin:6px auto 2px}
+.dial svg{transform:rotate(-90deg)}
+.dial .t{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.dial .t .num{font-family:var(--serif);font-size:38px;font-variant-numeric:tabular-nums;letter-spacing:-1px}
+.dial .t .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);margin-top:2px}
+.blocks{margin-top:14px}
+.blk{display:flex;gap:11px;padding:11px 0;border-top:1px solid var(--line);opacity:.4;transition:opacity .3s}
+.blk.on{opacity:1}
+.blk .tm{font-variant-numeric:tabular-nums;font-size:11.5px;color:var(--millet);width:44px;flex:0 0 44px;padding-top:3px;font-weight:700}
+.blk .bt{font-size:14.5px;font-weight:600}
+.blk .bg{font-size:12.5px;color:var(--ink-soft)}
+.blk .be{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--viridian-dark);margin-top:5px;display:none}
+.blk.on .be{display:block}
+
+/* ---------- progression ---------- */
+.bar{height:9px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:7px}
+.bar i{display:block;height:100%;background:var(--viridian);border-radius:99px;transition:width .4s}
+.prow{padding:13px 0;border-bottom:1px solid var(--line)}
+.prow .h{display:flex;justify-content:space-between;font-size:14px}
+.prow .h span{color:var(--ink-soft);font-variant-numeric:tabular-nums;font-size:12.5px}
+.mini{font-size:12.5px;color:var(--ink-soft);margin-top:5px}
+
+/* ---------- navigation ---------- */
+nav{
+  position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--paper-2);
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:9;
+}
+nav button{
+  flex:1;border:0;background:none;padding:11px 2px 12px;font-family:inherit;font-size:10.5px;
+  color:var(--ink-soft);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;
+  letter-spacing:.02em;
+}
+nav button .ic{font-size:17px;line-height:1}
+nav button[aria-current="true"]{color:var(--viridian);font-weight:700}
+.hidden{display:none!important}
+.center{text-align:center}
+.note{font-size:12.5px;color:var(--ink-soft);margin-top:14px;text-align:center}
+.count{font-size:11.5px;color:var(--ink-soft);text-align:center;margin-top:12px;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1 id="title">Réviser</h1>
+      <div class="sub" id="subtitle">Lexique agri-finance</div>
+    </div>
+    <div class="gauge"><b id="gActive">0</b> / <span id="gTotal">0</span> actifs</div>
+  </div>
+  <div id="chips" class="chips"></div>
+  <div id="view"></div>
+</div>
+
+<nav>
+  <button data-tab="rev" aria-current="true"><span class="ic">◧</span>Réviser</button>
+  <button data-tab="quiz"><span class="ic">◎</span>Quiz</button>
+  <button data-tab="ecrire"><span class="ic">✎</span>Écrire</button>
+  <button data-tab="pitch"><span class="ic">◔</span>Pitch</button>
+  <button data-tab="prog"><span class="ic">▤</span>Suivi</button>
+</nav>
+
+<script>
+const DATA = {"cards": [{"f": "Établissement de microfinance (EMF)", "e": "Microfinance institution (MFI)", "x": "Four MFIs are currently partnering with the programme.", "d": "Microfinance"}, {"f": "Coopérative d'épargne et de crédit", "e": "Savings and credit cooperative (SACCO)", "x": "The SACCO serves about 4,000 members.", "d": "Microfinance"}, {"f": "Banque commerciale", "e": "Commercial bank", "x": "Commercial banks remain reluctant to lend to smallholders.", "d": "Microfinance"}, {"f": "Tontine", "e": "Rotating savings and credit association (ROSCA)", "x": "ROSCAs still handle most rural savings.", "d": "Microfinance"}, {"f": "Agrément", "e": "Licence / approval", "x": "The institution obtained its licence in 2019.", "d": "Microfinance"}, {"f": "Superviseur bancaire", "e": "Banking supervisor / regulator", "x": "The regional banking supervisor sets the prudential ratios.", "d": "Microfinance"}, {"f": "Crédit / prêt", "e": "Loan", "x": "The average loan size is around 500,000 FCFA.", "d": "Microfinance"}, {"f": "Prêt à terme", "e": "Term loan", "x": "We propose a three-year term loan.", "d": "Microfinance"}, {"f": "Crédit d'investissement", "e": "Investment loan", "x": "Investment loans finance equipment and buildings.", "d": "Microfinance"}, {"f": "Crédit de campagne", "e": "Seasonal crop loan", "x": "Seasonal crop loans are repaid after the harvest.", "d": "Microfinance"}, {"f": "Découvert", "e": "Overdraft", "x": "The overdraft facility covers short-term cash needs.", "d": "Microfinance"}, {"f": "Ligne de crédit", "e": "Credit line / facility", "x": "The bank opened a 200 million FCFA credit line.", "d": "Microfinance"}, {"f": "Crédit-bail", "e": "Leasing", "x": "Leasing avoids a large upfront payment.", "d": "Microfinance"}, {"f": "Warrantage", "e": "Warehouse receipt financing", "x": "Warehouse receipt financing lets farmers sell later at a better price.", "d": "Microfinance"}, {"f": "Épargne", "e": "Savings", "x": "Savings mobilisation is the institution's main funding source.", "d": "Microfinance"}, {"f": "Dépôt à vue", "e": "Demand deposit", "x": "Demand deposits are volatile by nature.", "d": "Microfinance"}, {"f": "Dépôt à terme", "e": "Time deposit", "x": "Time deposits improve the maturity profile.", "d": "Microfinance"}, {"f": "Décaissement", "e": "Disbursement", "x": "Disbursement takes place within ten working days.", "d": "Microfinance"}, {"f": "Échéancier de remboursement", "e": "Repayment schedule", "x": "The repayment schedule matches the crop calendar.", "d": "Microfinance"}, {"f": "Différé de remboursement", "e": "Grace period", "x": "We recommend a six-month grace period.", "d": "Microfinance"}, {"f": "Taux d'intérêt nominal", "e": "Nominal interest rate", "x": "The nominal rate is 1.5% per month.", "d": "Microfinance"}, {"f": "Taux effectif global", "e": "Effective interest rate (APR)", "x": "The effective rate includes all fees.", "d": "Microfinance"}, {"f": "Frais de dossier", "e": "Application / processing fee", "x": "The processing fee is deducted at disbursement.", "d": "Microfinance"}, {"f": "Encours de crédit", "e": "Outstanding loan portfolio", "x": "The outstanding portfolio grew by 18% last year.", "d": "Microfinance"}, {"f": "Portefeuille à risque (PAR 30)", "e": "Portfolio at risk (PAR 30)", "x": "PAR 30 stands at 7.4%, above the 5% benchmark.", "d": "Microfinance"}, {"f": "Impayés / arriérés", "e": "Arrears", "x": "Arrears rose sharply during the lean season.", "d": "Microfinance"}, {"f": "Créance douteuse", "e": "Non-performing loan (NPL)", "x": "The NPL ratio must be brought below 5%.", "d": "Microfinance"}, {"f": "Provision pour créances douteuses", "e": "Loan loss provision", "x": "Provisions were increased in line with the regulation.", "d": "Microfinance"}, {"f": "Passation par pertes et profits", "e": "Write-off", "x": "Loans overdue by more than 360 days are written off.", "d": "Microfinance"}, {"f": "Recouvrement", "e": "Debt recovery / collections", "x": "The collections team was reinforced this year.", "d": "Microfinance"}, {"f": "Taux de remboursement", "e": "Repayment rate", "x": "The repayment rate reached 96% in the cotton scheme.", "d": "Microfinance"}, {"f": "Garantie", "e": "Collateral / security", "x": "Land titles are rarely accepted as collateral.", "d": "Microfinance"}, {"f": "Caution solidaire", "e": "Joint liability / group guarantee", "x": "Group guarantees replace physical collateral.", "d": "Microfinance"}, {"f": "Fonds de garantie", "e": "Guarantee fund", "x": "The guarantee fund covers 50% of the credit risk.", "d": "Microfinance"}, {"f": "Apport personnel", "e": "Own contribution / equity contribution", "x": "The promoter must bring a 20% own contribution.", "d": "Microfinance"}, {"f": "Instruction du dossier", "e": "Loan appraisal", "x": "Loan appraisal currently takes three weeks.", "d": "Microfinance"}, {"f": "Analyse de crédit", "e": "Credit analysis", "x": "Credit analysis focuses on repayment capacity.", "d": "Microfinance"}, {"f": "Comité de crédit", "e": "Credit committee", "x": "The credit committee meets twice a month.", "d": "Microfinance"}, {"f": "Agent de crédit", "e": "Loan officer", "x": "Each loan officer manages about 250 clients.", "d": "Microfinance"}, {"f": "Notation / scoring", "e": "Credit scoring", "x": "A simple scoring tool would speed up decisions.", "d": "Microfinance"}, {"f": "Capacité de remboursement", "e": "Repayment capacity", "x": "Repayment capacity is assessed from net farm income.", "d": "Microfinance"}, {"f": "Surendettement", "e": "Over-indebtedness", "x": "Multiple borrowing increases over-indebtedness risk.", "d": "Microfinance"}, {"f": "Centrale des risques", "e": "Credit bureau", "x": "There is no functioning credit bureau for MFIs.", "d": "Microfinance"}, {"f": "Fonds propres", "e": "Equity / own funds", "x": "Equity remains too thin to absorb losses.", "d": "Microfinance"}, {"f": "Ratio de solvabilité", "e": "Capital adequacy ratio", "x": "The capital adequacy ratio is above the minimum.", "d": "Microfinance"}, {"f": "Liquidité", "e": "Liquidity", "x": "Liquidity tightens at the start of the cropping season.", "d": "Microfinance"}, {"f": "Refinancement", "e": "Refinancing / wholesale funding", "x": "The MFI is seeking refinancing from a commercial bank.", "d": "Microfinance"}, {"f": "Bilan", "e": "Balance sheet", "x": "The balance sheet total doubled in three years.", "d": "Microfinance"}, {"f": "Compte de résultat", "e": "Income statement / P&L", "x": "The income statement shows a small operating loss.", "d": "Microfinance"}, {"f": "Produit net bancaire", "e": "Net banking income", "x": "Net banking income covers 85% of operating costs.", "d": "Microfinance"}, {"f": "Coefficient d'exploitation", "e": "Operating expense ratio", "x": "The operating expense ratio is high for this loan size.", "d": "Microfinance"}, {"f": "Autosuffisance opérationnelle", "e": "Operational self-sufficiency (OSS)", "x": "OSS reached 102% in 2025.", "d": "Microfinance"}, {"f": "Rendement du portefeuille", "e": "Portfolio yield", "x": "Portfolio yield fell after the rate cap.", "d": "Microfinance"}, {"f": "Inclusion financière", "e": "Financial inclusion", "x": "Financial inclusion is a core objective of the programme.", "d": "Microfinance"}, {"f": "Population non bancarisée", "e": "Unbanked population", "x": "Most rural households remain unbanked.", "d": "Microfinance"}, {"f": "Sous-bancarisé", "e": "Underbanked", "x": "Underbanked clients use informal savings instead.", "d": "Microfinance"}, {"f": "Éducation financière", "e": "Financial literacy", "x": "Financial literacy sessions precede the loan cycle.", "d": "Microfinance"}, {"f": "Monnaie électronique / mobile money", "e": "Mobile money", "x": "Mobile money reduces cash handling costs.", "d": "Microfinance"}, {"f": "Agent bancaire / de proximité", "e": "Banking agent", "x": "Banking agents extend outreach to remote areas.", "d": "Microfinance"}, {"f": "Interopérabilité", "e": "Interoperability", "x": "Interoperability between wallets is still limited.", "d": "Microfinance"}, {"f": "Produit financier adapté", "e": "Tailored financial product", "x": "The product was tailored to the onion value chain.", "d": "Microfinance"}, {"f": "Point de service", "e": "Service point / branch", "x": "The MFI operates twelve branches in the region.", "d": "Microfinance"}, {"f": "Zone de couverture", "e": "Outreach area", "x": "The outreach area covers six communes.", "d": "Microfinance"}, {"f": "Finance islamique", "e": "Islamic finance", "x": "Islamic finance attracts clients excluded on religious grounds.", "d": "Microfinance"}, {"f": "Murabaha (vente à marge)", "e": "Cost-plus sale (Murabaha)", "x": "Under Murabaha, the institution buys and resells the asset.", "d": "Microfinance"}, {"f": "Salam (vente à terme)", "e": "Forward sale contract (Salam)", "x": "Salam suits seasonal crop financing.", "d": "Microfinance"}, {"f": "Ijara (location-vente)", "e": "Lease-to-own (Ijara)", "x": "Ijara finances processing equipment.", "d": "Microfinance"}, {"f": "Partage des profits et des pertes", "e": "Profit-and-loss sharing", "x": "Profit-and-loss sharing replaces interest.", "d": "Microfinance"}, {"f": "Conformité à la charia", "e": "Sharia compliance", "x": "A Sharia board validates each product.", "d": "Microfinance"}, {"f": "Chaîne de valeur", "e": "Value chain", "x": "The rice value chain shows the widest financing gap.", "d": "Chaînes de valeur"}, {"f": "Maillon", "e": "Segment / link", "x": "The processing segment captures most of the value.", "d": "Chaînes de valeur"}, {"f": "Acteur", "e": "Actor / player", "x": "Key players were mapped during the diagnostic.", "d": "Chaînes de valeur"}, {"f": "Amont", "e": "Upstream", "x": "Upstream constraints concern input supply.", "d": "Chaînes de valeur"}, {"f": "Aval", "e": "Downstream", "x": "Downstream, buyers set the price.", "d": "Chaînes de valeur"}, {"f": "Producteur", "e": "Producer / farmer", "x": "Farmers sell individually at low prices.", "d": "Chaînes de valeur"}, {"f": "Petit producteur", "e": "Smallholder farmer", "x": "Smallholders cultivate less than two hectares.", "d": "Chaînes de valeur"}, {"f": "Exploitation agricole", "e": "Farm / farming operation", "x": "The average farm size is 1.8 hectares.", "d": "Chaînes de valeur"}, {"f": "Superficie cultivée", "e": "Cultivated area / acreage", "x": "The cultivated area expanded by 12%.", "d": "Chaînes de valeur"}, {"f": "Rendement", "e": "Yield", "x": "Average yield is 2.1 tonnes per hectare.", "d": "Chaînes de valeur"}, {"f": "Intrants", "e": "Inputs", "x": "Input costs represent 35% of production costs.", "d": "Chaînes de valeur"}, {"f": "Semences améliorées", "e": "Improved seeds", "x": "Improved seeds raise yields by up to 40%.", "d": "Chaînes de valeur"}, {"f": "Engrais", "e": "Fertiliser", "x": "Fertiliser is delivered late in most communes.", "d": "Chaînes de valeur"}, {"f": "Produits phytosanitaires", "e": "Crop protection products", "x": "Crop protection products must be used safely.", "d": "Chaînes de valeur"}, {"f": "Mécanisation", "e": "Mechanisation", "x": "Mechanisation remains limited to ploughing.", "d": "Chaînes de valeur"}, {"f": "Irrigation", "e": "Irrigation", "x": "Small-scale irrigation extends the cropping season.", "d": "Chaînes de valeur"}, {"f": "Récolte", "e": "Harvest", "x": "The harvest starts in November.", "d": "Chaînes de valeur"}, {"f": "Post-récolte", "e": "Post-harvest", "x": "Post-harvest handling determines final quality.", "d": "Chaînes de valeur"}, {"f": "Pertes post-récolte", "e": "Post-harvest losses", "x": "Post-harvest losses reach 25% for onions.", "d": "Chaînes de valeur"}, {"f": "Stockage", "e": "Storage", "x": "Storage capacity is the main bottleneck.", "d": "Chaînes de valeur"}, {"f": "Magasin de stockage", "e": "Warehouse / store", "x": "The cooperative built a 200-tonne warehouse.", "d": "Chaînes de valeur"}, {"f": "Transformation", "e": "Processing", "x": "Local processing adds 30% to the farm-gate value.", "d": "Chaînes de valeur"}, {"f": "Agro-industrie", "e": "Agribusiness / agro-processing", "x": "Agro-processing units are mostly informal.", "d": "Chaînes de valeur"}, {"f": "Valeur ajoutée", "e": "Value added", "x": "Value added per tonne rises after grading.", "d": "Chaînes de valeur"}, {"f": "Conditionnement", "e": "Packaging", "x": "Packaging improves shelf life and price.", "d": "Chaînes de valeur"}, {"f": "Traçabilité", "e": "Traceability", "x": "Traceability is required by export buyers.", "d": "Chaînes de valeur"}, {"f": "Normes de qualité", "e": "Quality standards", "x": "Quality standards are poorly known by producers.", "d": "Chaînes de valeur"}, {"f": "Certification", "e": "Certification", "x": "Organic certification opens premium markets.", "d": "Chaînes de valeur"}, {"f": "Commercialisation", "e": "Marketing / sales", "x": "Collective marketing improves bargaining power.", "d": "Chaînes de valeur"}, {"f": "Débouché", "e": "Market outlet", "x": "The urban market is the main outlet.", "d": "Chaînes de valeur"}, {"f": "Groupage", "e": "Bulking / aggregation", "x": "Bulking reduces transaction costs.", "d": "Chaînes de valeur"}, {"f": "Collecteur / agrégateur", "e": "Aggregator / collector", "x": "Aggregators finance farmers informally.", "d": "Chaînes de valeur"}, {"f": "Grossiste", "e": "Wholesaler", "x": "Wholesalers control price formation.", "d": "Chaînes de valeur"}, {"f": "Détaillant", "e": "Retailer", "x": "Retailers operate on thin margins.", "d": "Chaînes de valeur"}, {"f": "Contrat d'achat", "e": "Offtake agreement", "x": "An offtake agreement secures the buyer.", "d": "Chaînes de valeur"}, {"f": "Acheteur garanti", "e": "Offtaker / guaranteed buyer", "x": "A committed offtaker makes the loan bankable.", "d": "Chaînes de valeur"}, {"f": "Agriculture contractuelle", "e": "Contract farming", "x": "Contract farming links credit to a guaranteed market.", "d": "Chaînes de valeur"}, {"f": "Entreprise ancre", "e": "Anchor firm / lead firm", "x": "The anchor firm supplies inputs on credit.", "d": "Chaînes de valeur"}, {"f": "Coopérative", "e": "Cooperative", "x": "The cooperative gathers 320 members.", "d": "Chaînes de valeur"}, {"f": "Groupement d'intérêt commun (GIC)", "e": "Common initiative group", "x": "Common initiative groups are the dominant legal form.", "d": "Chaînes de valeur"}, {"f": "Organisation de producteurs", "e": "Farmer organisation (FO)", "x": "Farmer organisations need stronger governance.", "d": "Chaînes de valeur"}, {"f": "Interprofession", "e": "Inter-professional body", "x": "The inter-professional body sets the reference price.", "d": "Chaînes de valeur"}, {"f": "Prix bord champ", "e": "Farm-gate price", "x": "The farm-gate price fell by 15% this season.", "d": "Chaînes de valeur"}, {"f": "Marge brute", "e": "Gross margin", "x": "Gross margin per hectare is 320,000 FCFA.", "d": "Chaînes de valeur"}, {"f": "Volatilité des prix", "e": "Price volatility", "x": "Price volatility discourages lenders.", "d": "Chaînes de valeur"}, {"f": "Asymétrie d'information", "e": "Information asymmetry", "x": "Information asymmetry raises the cost of credit.", "d": "Chaînes de valeur"}, {"f": "Goulot d'étranglement", "e": "Bottleneck", "x": "Transport is the main bottleneck in the dry season.", "d": "Chaînes de valeur"}, {"f": "Analyse de la chaîne de valeur", "e": "Value chain analysis", "x": "The value chain analysis was carried out in 2025.", "d": "Chaînes de valeur"}, {"f": "Cartographie des acteurs", "e": "Actor mapping", "x": "Actor mapping identified 40 stakeholders.", "d": "Chaînes de valeur"}, {"f": "Coton", "e": "Cotton", "x": "Cotton remains the main cash crop in the North.", "d": "Chaînes de valeur"}, {"f": "Riz", "e": "Rice", "x": "Rice demand grows faster than local supply.", "d": "Chaînes de valeur"}, {"f": "Oignon", "e": "Onion", "x": "Onion storage losses are very high.", "d": "Chaînes de valeur"}, {"f": "Arachide", "e": "Groundnut", "x": "Groundnut processing is largely women-led.", "d": "Chaînes de valeur"}, {"f": "Sésame", "e": "Sesame", "x": "Sesame is mostly exported unprocessed.", "d": "Chaînes de valeur"}, {"f": "Maïs", "e": "Maize", "x": "Maize supplies both food and feed markets.", "d": "Chaînes de valeur"}, {"f": "Sorgho", "e": "Sorghum", "x": "Sorghum is drought-tolerant and widely grown.", "d": "Chaînes de valeur"}, {"f": "Niébé", "e": "Cowpea", "x": "Cowpea improves soil fertility.", "d": "Chaînes de valeur"}, {"f": "Élevage", "e": "Livestock farming", "x": "Livestock farming is a key savings mechanism.", "d": "Chaînes de valeur"}, {"f": "Embouche bovine", "e": "Cattle fattening", "x": "Cattle fattening cycles last four months.", "d": "Chaînes de valeur"}, {"f": "Aviculture", "e": "Poultry farming", "x": "Poultry farming offers quick cash rotation.", "d": "Chaînes de valeur"}, {"f": "Pisciculture", "e": "Fish farming / aquaculture", "x": "Fish farming is emerging around the dams.", "d": "Chaînes de valeur"}, {"f": "Apiculture", "e": "Beekeeping", "x": "Beekeeping suits agroforestry systems.", "d": "Chaînes de valeur"}, {"f": "Maraîchage", "e": "Market gardening / horticulture", "x": "Market gardening generates off-season income.", "d": "Chaînes de valeur"}, {"f": "Périmètre irrigué", "e": "Irrigation scheme", "x": "The irrigation scheme covers 150 hectares.", "d": "Chaînes de valeur"}, {"f": "Plan d'affaires", "e": "Business plan", "x": "The business plan covers a five-year horizon.", "d": "Business plan"}, {"f": "Modèle économique", "e": "Business model", "x": "The business model relies on volume and low margins.", "d": "Business plan"}, {"f": "Proposition de valeur", "e": "Value proposition", "x": "The value proposition is timely input delivery.", "d": "Business plan"}, {"f": "Étude de marché", "e": "Market study", "x": "The market study confirms unmet demand.", "d": "Business plan"}, {"f": "Demande / offre", "e": "Demand / supply", "x": "Local supply covers only 60% of demand.", "d": "Business plan"}, {"f": "Part de marché", "e": "Market share", "x": "The company targets a 5% market share.", "d": "Business plan"}, {"f": "Segment de clientèle", "e": "Customer segment", "x": "The main customer segment is urban retailers.", "d": "Business plan"}, {"f": "Concurrence", "e": "Competition", "x": "Competition comes mainly from imports.", "d": "Business plan"}, {"f": "Avantage concurrentiel", "e": "Competitive advantage", "x": "Proximity to producers is a competitive advantage.", "d": "Business plan"}, {"f": "Analyse FFOM", "e": "SWOT analysis", "x": "The SWOT analysis highlights weak governance.", "d": "Business plan"}, {"f": "Forces", "e": "Strengths", "x": "Strengths include an experienced management team.", "d": "Business plan"}, {"f": "Faiblesses", "e": "Weaknesses", "x": "Weaknesses relate to record-keeping.", "d": "Business plan"}, {"f": "Opportunités", "e": "Opportunities", "x": "Opportunities arise from rising urban demand.", "d": "Business plan"}, {"f": "Menaces", "e": "Threats", "x": "Threats include climate variability.", "d": "Business plan"}, {"f": "Chiffre d'affaires", "e": "Revenue / turnover", "x": "Revenue is projected at 85 million FCFA in year three.", "d": "Business plan"}, {"f": "Coût de revient", "e": "Unit cost / cost price", "x": "The unit cost is 420 FCFA per kilo.", "d": "Business plan"}, {"f": "Charges fixes", "e": "Fixed costs", "x": "Fixed costs are dominated by rent and salaries.", "d": "Business plan"}, {"f": "Charges variables", "e": "Variable costs", "x": "Variable costs move with production volume.", "d": "Business plan"}, {"f": "Marge brute", "e": "Gross margin", "x": "Gross margin stands at 28%.", "d": "Business plan"}, {"f": "Marge nette", "e": "Net margin", "x": "Net margin improves from year two.", "d": "Business plan"}, {"f": "Excédent brut d'exploitation", "e": "EBITDA", "x": "EBITDA turns positive in year two.", "d": "Business plan"}, {"f": "Résultat net", "e": "Net profit", "x": "Net profit reaches 12 million FCFA in year five.", "d": "Business plan"}, {"f": "Seuil de rentabilité", "e": "Break-even point", "x": "The break-even point is 60 tonnes per year.", "d": "Business plan"}, {"f": "Compte d'exploitation prévisionnel", "e": "Projected income statement", "x": "The projected income statement assumes stable prices.", "d": "Business plan"}, {"f": "Plan de trésorerie", "e": "Cash flow plan", "x": "The cash flow plan shows a gap in month four.", "d": "Business plan"}, {"f": "Flux de trésorerie", "e": "Cash flow", "x": "Cash flow remains negative during the first season.", "d": "Business plan"}, {"f": "Besoin en fonds de roulement", "e": "Working capital requirement", "x": "The working capital requirement peaks before harvest.", "d": "Business plan"}, {"f": "Fonds de roulement", "e": "Working capital", "x": "Working capital is financed by a seasonal loan.", "d": "Business plan"}, {"f": "Investissement", "e": "Capital expenditure (capex)", "x": "Capex covers a mill and a storage shed.", "d": "Business plan"}, {"f": "Amortissement", "e": "Depreciation", "x": "Equipment is depreciated over five years.", "d": "Business plan"}, {"f": "Plan de financement", "e": "Financing plan", "x": "The financing plan combines equity, grant and loan.", "d": "Business plan"}, {"f": "Structure du capital", "e": "Capital structure", "x": "The capital structure is 30% equity, 70% debt.", "d": "Business plan"}, {"f": "Endettement", "e": "Indebtedness / leverage", "x": "Leverage remains within acceptable limits.", "d": "Business plan"}, {"f": "Ratio d'endettement", "e": "Debt-to-equity ratio", "x": "The debt-to-equity ratio is 2.3.", "d": "Business plan"}, {"f": "Service de la dette", "e": "Debt service", "x": "Debt service absorbs 40% of operating cash flow.", "d": "Business plan"}, {"f": "Ratio de couverture du service de la dette", "e": "Debt service coverage ratio (DSCR)", "x": "The DSCR stays above 1.3 throughout.", "d": "Business plan"}, {"f": "Valeur actuelle nette (VAN)", "e": "Net present value (NPV)", "x": "The NPV is positive at a 12% discount rate.", "d": "Business plan"}, {"f": "Taux de rentabilité interne (TRI)", "e": "Internal rate of return (IRR)", "x": "The IRR is estimated at 22%.", "d": "Business plan"}, {"f": "Délai de récupération", "e": "Payback period", "x": "The payback period is three years and four months.", "d": "Business plan"}, {"f": "Taux d'actualisation", "e": "Discount rate", "x": "A 12% discount rate reflects the cost of capital.", "d": "Business plan"}, {"f": "Retour sur investissement", "e": "Return on investment (ROI)", "x": "ROI justifies the equipment purchase.", "d": "Business plan"}, {"f": "Rentabilité", "e": "Profitability", "x": "Profitability depends on capacity utilisation.", "d": "Business plan"}, {"f": "Viabilité", "e": "Viability", "x": "Financial viability was tested under three scenarios.", "d": "Business plan"}, {"f": "Bancabilité", "e": "Bankability", "x": "Bankability improves with a signed offtake contract.", "d": "Business plan"}, {"f": "Hypothèses", "e": "Assumptions", "x": "All assumptions are documented in annex.", "d": "Business plan"}, {"f": "Scénario de base", "e": "Base case", "x": "The base case assumes a 5% annual price increase.", "d": "Business plan"}, {"f": "Scénario pessimiste", "e": "Downside scenario", "x": "In the downside scenario, the project still breaks even.", "d": "Business plan"}, {"f": "Analyse de sensibilité", "e": "Sensitivity analysis", "x": "Sensitivity analysis was run on price and yield.", "d": "Business plan"}, {"f": "Projection sur cinq ans", "e": "Five-year projection", "x": "The five-year projection is built on field data.", "d": "Business plan"}, {"f": "Prévisions", "e": "Forecast", "x": "The sales forecast is deliberately conservative.", "d": "Business plan"}, {"f": "Budget prévisionnel", "e": "Budget estimate", "x": "The budget estimate includes a 5% contingency.", "d": "Business plan"}, {"f": "Écart budgétaire", "e": "Budget variance", "x": "Budget variance is reviewed every quarter.", "d": "Business plan"}, {"f": "Devis", "e": "Quotation", "x": "Three quotations were obtained for the mill.", "d": "Business plan"}, {"f": "Facture", "e": "Invoice", "x": "Invoices must be kept for the audit trail.", "d": "Business plan"}, {"f": "États financiers", "e": "Financial statements", "x": "Financial statements are certified annually.", "d": "Business plan"}, {"f": "Commissaire aux comptes", "e": "Statutory auditor", "x": "The statutory auditor issued an unqualified opinion.", "d": "Business plan"}, {"f": "Capitaux propres", "e": "Equity", "x": "Equity was increased through retained earnings.", "d": "Business plan"}, {"f": "Subvention", "e": "Grant / subsidy", "x": "A matching grant covers 30% of the investment.", "d": "Business plan"}, {"f": "Apport en nature", "e": "In-kind contribution", "x": "Land is provided as an in-kind contribution.", "d": "Business plan"}, {"f": "Prise de participation", "e": "Equity stake", "x": "The fund took a minority equity stake.", "d": "Business plan"}, {"f": "Effet de levier", "e": "Leverage effect", "x": "Each grant euro leverages three euros of credit.", "d": "Business plan"}, {"f": "Création d'emplois", "e": "Job creation", "x": "The project creates 18 direct jobs.", "d": "Business plan"}, {"f": "Emplois directs et indirects", "e": "Direct and indirect jobs", "x": "Indirect jobs arise along the supply chain.", "d": "Business plan"}, {"f": "Passage à l'échelle", "e": "Scaling up", "x": "Scaling up requires a second production line.", "d": "Business plan"}, {"f": "Pérennité", "e": "Sustainability", "x": "Sustainability depends on management capacity.", "d": "Business plan"}, {"f": "Parties prenantes", "e": "Stakeholders", "x": "All stakeholders were consulted.", "d": "Business plan"}, {"f": "Bailleur de fonds", "e": "Donor / funding agency", "x": "The donor requires quarterly reporting.", "d": "Bailleurs"}, {"f": "Agence d'exécution", "e": "Implementing agency", "x": "The implementing agency is accountable for results.", "d": "Bailleurs"}, {"f": "Maître d'ouvrage", "e": "Contracting authority", "x": "The ministry acts as contracting authority.", "d": "Bailleurs"}, {"f": "Bénéficiaire final", "e": "End beneficiary", "x": "End beneficiaries are rural households.", "d": "Bailleurs"}, {"f": "Convention de financement", "e": "Financing agreement", "x": "The financing agreement runs until 2028.", "d": "Bailleurs"}, {"f": "Accord de subvention", "e": "Grant agreement", "x": "The grant agreement was signed in March.", "d": "Bailleurs"}, {"f": "Appel d'offres", "e": "Call for tenders / tender", "x": "The tender closes on 30 September.", "d": "Bailleurs"}, {"f": "Appel à propositions", "e": "Call for proposals", "x": "We are preparing a response to the call for proposals.", "d": "Bailleurs"}, {"f": "Termes de référence (TDR)", "e": "Terms of reference (ToR)", "x": "The ToR define five deliverables.", "d": "Bailleurs"}, {"f": "Note conceptuelle", "e": "Concept note", "x": "The concept note is limited to five pages.", "d": "Bailleurs"}, {"f": "Proposition de projet", "e": "Project proposal", "x": "The project proposal was shortlisted.", "d": "Bailleurs"}, {"f": "Offre technique", "e": "Technical proposal", "x": "The technical proposal carries 70% of the score.", "d": "Bailleurs"}, {"f": "Offre financière", "e": "Financial proposal", "x": "The financial proposal must be submitted separately.", "d": "Bailleurs"}, {"f": "Prestataire de services", "e": "Service provider", "x": "The service provider is selected competitively.", "d": "Bailleurs"}, {"f": "Livrable", "e": "Deliverable", "x": "The next deliverable is due on 15 October.", "d": "Bailleurs"}, {"f": "Jalon", "e": "Milestone", "x": "Payment is linked to milestones.", "d": "Bailleurs"}, {"f": "Chronogramme", "e": "Work plan / timeline", "x": "The work plan covers twelve months.", "d": "Bailleurs"}, {"f": "Cadre logique", "e": "Logical framework (logframe)", "x": "The logframe was revised at mid-term.", "d": "Bailleurs"}, {"f": "Chaîne de résultats", "e": "Results chain", "x": "The results chain links activities to impact.", "d": "Bailleurs"}, {"f": "Activité", "e": "Activity", "x": "Activities are grouped under three outputs.", "d": "Bailleurs"}, {"f": "Produit / extrant", "e": "Output", "x": "Output 3 focuses on inclusive finance.", "d": "Bailleurs"}, {"f": "Effet", "e": "Outcome", "x": "The expected outcome is improved access to credit.", "d": "Bailleurs"}, {"f": "Impact", "e": "Impact", "x": "Impact is measured at household level.", "d": "Bailleurs"}, {"f": "Indicateur", "e": "Indicator", "x": "Each indicator has a clear definition.", "d": "Bailleurs"}, {"f": "Indicateur de performance clé", "e": "Key performance indicator (KPI)", "x": "Three KPIs are reported monthly.", "d": "Bailleurs"}, {"f": "Valeur de référence", "e": "Baseline", "x": "The baseline was established in 2024.", "d": "Bailleurs"}, {"f": "Valeur cible", "e": "Target value", "x": "The target value is 5,000 borrowers by 2027.", "d": "Bailleurs"}, {"f": "Suivi-évaluation", "e": "Monitoring and evaluation (M&E)", "x": "The M&E system tracks disbursements weekly.", "d": "Bailleurs"}, {"f": "Collecte de données", "e": "Data collection", "x": "Data collection is done on tablets.", "d": "Bailleurs"}, {"f": "Rapport d'avancement", "e": "Progress report", "x": "The progress report is due every six months.", "d": "Bailleurs"}, {"f": "Revue à mi-parcours", "e": "Mid-term review", "x": "The mid-term review recommended a reallocation.", "d": "Bailleurs"}, {"f": "Évaluation finale", "e": "Final evaluation", "x": "The final evaluation will be externally led.", "d": "Bailleurs"}, {"f": "Enseignements tirés", "e": "Lessons learned", "x": "Lessons learned feed the next phase.", "d": "Bailleurs"}, {"f": "Capitalisation", "e": "Knowledge capitalisation", "x": "Knowledge capitalisation is a formal deliverable.", "d": "Bailleurs"}, {"f": "Redevabilité", "e": "Accountability", "x": "Accountability towards beneficiaries is essential.", "d": "Bailleurs"}, {"f": "Groupe cible", "e": "Target group", "x": "The target group includes women and youth.", "d": "Bailleurs"}, {"f": "Ciblage", "e": "Targeting", "x": "Targeting criteria were agreed with the communes.", "d": "Bailleurs"}, {"f": "Ancrage institutionnel", "e": "Institutional anchoring", "x": "Institutional anchoring secures continuity.", "d": "Bailleurs"}, {"f": "Appropriation", "e": "Ownership", "x": "National ownership drives sustainability.", "d": "Bailleurs"}, {"f": "Renforcement des capacités", "e": "Capacity building", "x": "Capacity building targets loan officers.", "d": "Bailleurs"}, {"f": "Assistance technique", "e": "Technical assistance", "x": "Technical assistance is provided over 18 months.", "d": "Bailleurs"}, {"f": "Accompagnement / coaching", "e": "Coaching / mentoring", "x": "Coaching follows each training session.", "d": "Bailleurs"}, {"f": "Atelier", "e": "Workshop", "x": "The workshop gathered forty participants.", "d": "Bailleurs"}, {"f": "Restitution", "e": "Feedback session / debriefing", "x": "A feedback session is planned with the partners.", "d": "Bailleurs"}, {"f": "Sauvegardes environnementales et sociales", "e": "Environmental and social safeguards", "x": "Safeguards apply to all infrastructure works.", "d": "Bailleurs"}, {"f": "Diligence raisonnable", "e": "Due diligence", "x": "Due diligence was conducted on each partner MFI.", "d": "Bailleurs"}, {"f": "Passation de marchés", "e": "Procurement", "x": "Procurement follows the donor's rules.", "d": "Bailleurs"}, {"f": "Taux d'exécution", "e": "Execution rate / burn rate", "x": "The execution rate reached 78% at mid-year.", "d": "Bailleurs"}, {"f": "Reliquat", "e": "Unspent balance", "x": "The unspent balance will be reallocated.", "d": "Bailleurs"}, {"f": "Cofinancement", "e": "Co-financing", "x": "Co-financing comes from the local council.", "d": "Bailleurs"}, {"f": "Complémentarité", "e": "Complementarity", "x": "Complementarity with other programmes was checked.", "d": "Bailleurs"}, {"f": "Synergie", "e": "Synergy", "x": "Synergies were identified with the value chain component.", "d": "Bailleurs"}, {"f": "Stratégie de sortie", "e": "Exit strategy", "x": "The exit strategy transfers the tool to the MFI.", "d": "Bailleurs"}, {"f": "Genre", "e": "Gender", "x": "Gender is mainstreamed across all activities.", "d": "Bailleurs"}, {"f": "Autonomisation économique des femmes", "e": "Women's economic empowerment", "x": "Women's economic empowerment is a cross-cutting priority.", "d": "Bailleurs"}, {"f": "Jeunes", "e": "Youth", "x": "Youth employment is an explicit target.", "d": "Bailleurs"}, {"f": "Ne laisser personne de côté", "e": "Leave no one behind", "x": "The principle is to leave no one behind.", "d": "Bailleurs"}, {"f": "Réunion de cadrage", "e": "Kick-off / scoping meeting", "x": "A scoping meeting was held with the team.", "d": "Bailleurs"}, {"f": "Compte rendu", "e": "Minutes", "x": "The minutes were circulated the same day.", "d": "Bailleurs"}, {"f": "Note de service", "e": "Internal memo", "x": "An internal memo clarified the procedure.", "d": "Bailleurs"}, {"f": "Feuille de temps", "e": "Timesheet", "x": "Timesheets are submitted at month end.", "d": "Bailleurs"}, {"f": "Mission de terrain", "e": "Field mission", "x": "The field mission covered six communes.", "d": "Bailleurs"}, {"f": "Changement climatique", "e": "Climate change", "x": "Climate change shortens the rainy season.", "d": "Climat"}, {"f": "Adaptation", "e": "Adaptation", "x": "Adaptation measures are integrated into the business plans.", "d": "Climat"}, {"f": "Atténuation", "e": "Mitigation", "x": "Mitigation is a secondary objective here.", "d": "Climat"}, {"f": "Résilience", "e": "Resilience", "x": "Resilience is built through income diversification.", "d": "Climat"}, {"f": "Vulnérabilité", "e": "Vulnerability", "x": "Vulnerability is highest in the Far North.", "d": "Climat"}, {"f": "Aléa climatique", "e": "Climate hazard", "x": "Floods are the main climate hazard.", "d": "Climat"}, {"f": "Sécheresse", "e": "Drought", "x": "Drought reduced yields by a third.", "d": "Climat"}, {"f": "Poche de sécheresse", "e": "Dry spell", "x": "A dry spell in July damaged the crop.", "d": "Climat"}, {"f": "Inondation", "e": "Flood / flooding", "x": "Flooding destroyed part of the harvest.", "d": "Climat"}, {"f": "Variabilité pluviométrique", "e": "Rainfall variability", "x": "Rainfall variability makes planting dates uncertain.", "d": "Climat"}, {"f": "Agriculture climato-intelligente", "e": "Climate-smart agriculture (CSA)", "x": "CSA practices raise yields and reduce risk.", "d": "Climat"}, {"f": "Agroécologie", "e": "Agroecology", "x": "Agroecology lowers input dependency.", "d": "Climat"}, {"f": "Agroforesterie", "e": "Agroforestry", "x": "Agroforestry provides shade and extra income.", "d": "Climat"}, {"f": "Conservation des sols", "e": "Soil conservation", "x": "Soil conservation limits erosion on slopes.", "d": "Climat"}, {"f": "Dégradation des terres", "e": "Land degradation", "x": "Land degradation affects 40% of the area.", "d": "Climat"}, {"f": "Désertification", "e": "Desertification", "x": "Desertification is advancing southwards.", "d": "Climat"}, {"f": "Reboisement", "e": "Reforestation", "x": "Reforestation is organised with the communes.", "d": "Climat"}, {"f": "Restauration des terres", "e": "Land restoration", "x": "Land restoration brings degraded plots back into use.", "d": "Climat"}, {"f": "Cordon pierreux", "e": "Stone bund", "x": "Stone bunds slow water runoff.", "d": "Climat"}, {"f": "Fumure organique", "e": "Organic manure", "x": "Organic manure improves water retention.", "d": "Climat"}, {"f": "Compost", "e": "Compost", "x": "Compost production is a low-cost practice.", "d": "Climat"}, {"f": "Semences tolérantes à la sécheresse", "e": "Drought-tolerant seeds", "x": "Drought-tolerant seeds shorten the growing cycle.", "d": "Climat"}, {"f": "Gestion intégrée de la fertilité des sols", "e": "Integrated soil fertility management", "x": "This approach combines organic and mineral inputs.", "d": "Climat"}, {"f": "Bassin versant", "e": "Watershed", "x": "Watershed management is handled collectively.", "d": "Climat"}, {"f": "Empreinte carbone", "e": "Carbon footprint", "x": "The carbon footprint of transport is significant.", "d": "Climat"}, {"f": "Crédit carbone", "e": "Carbon credit", "x": "Carbon credits remain hard to access at this scale.", "d": "Climat"}, {"f": "Finance climatique", "e": "Climate finance", "x": "Climate finance is still marginal for smallholders.", "d": "Climat"}, {"f": "Assurance indicielle", "e": "Index-based insurance", "x": "Index-based insurance covers rainfall deficits.", "d": "Climat"}, {"f": "Assurance récolte", "e": "Crop insurance", "x": "Crop insurance would de-risk lending.", "d": "Climat"}, {"f": "Gestion des risques climatiques", "e": "Climate risk management", "x": "Climate risk management is built into the loan product.", "d": "Climat"}, {"f": "Énergie solaire", "e": "Solar energy", "x": "Solar energy powers the irrigation pumps.", "d": "Climat"}, {"f": "Pompe solaire", "e": "Solar pump", "x": "A solar pump cuts fuel costs by 70%.", "d": "Climat"}, {"f": "Énergie renouvelable", "e": "Renewable energy", "x": "Renewable energy reduces operating costs.", "d": "Climat"}, {"f": "Efficacité énergétique", "e": "Energy efficiency", "x": "Energy efficiency improves the margin.", "d": "Climat"}, {"f": "Sécurité alimentaire", "e": "Food security", "x": "Food security improves with storage capacity.", "d": "Climat"}, {"f": "Nutrition", "e": "Nutrition", "x": "Nutrition outcomes are tracked at household level.", "d": "Climat"}, {"f": "Biodiversité", "e": "Biodiversity", "x": "Biodiversity is preserved through crop rotation.", "d": "Climat"}, {"f": "Transition écologique", "e": "Green transition", "x": "The green transition creates new business lines.", "d": "Climat"}, {"f": "Économie verte", "e": "Green economy", "x": "The green economy offers jobs for youth.", "d": "Climat"}, {"f": "Déchets / valorisation", "e": "Waste / waste recovery", "x": "Waste recovery turns residues into fertiliser.", "d": "Climat"}, {"f": "mettre en œuvre", "e": "to implement", "x": "The programme is implemented by GFA.", "d": "Verbes"}, {"f": "renforcer", "e": "to strengthen", "x": "We aim to strengthen the institution's credit process.", "d": "Verbes"}, {"f": "appuyer / accompagner", "e": "to support / to coach", "x": "We support four MFIs in product design.", "d": "Verbes"}, {"f": "identifier", "e": "to identify", "x": "We identified three bankable opportunities.", "d": "Verbes"}, {"f": "formaliser", "e": "to formalise", "x": "Informal groups are encouraged to formalise.", "d": "Verbes"}, {"f": "structurer", "e": "to structure", "x": "We structured the financing in three tranches.", "d": "Verbes"}, {"f": "évaluer", "e": "to assess", "x": "We assessed the repayment capacity of each group.", "d": "Verbes"}, {"f": "suivre", "e": "to monitor", "x": "Disbursements are monitored monthly.", "d": "Verbes"}, {"f": "rendre compte", "e": "to report", "x": "We report to the donor twice a year.", "d": "Verbes"}, {"f": "mobiliser des ressources", "e": "to mobilise resources", "x": "The cooperative mobilised its own resources.", "d": "Verbes"}, {"f": "lever des fonds", "e": "to raise funds", "x": "The company plans to raise funds locally.", "d": "Verbes"}, {"f": "octroyer un crédit", "e": "to grant a loan", "x": "The committee granted a two-year loan.", "d": "Verbes"}, {"f": "rembourser", "e": "to repay", "x": "Farmers repay after selling the crop.", "d": "Verbes"}, {"f": "décaisser", "e": "to disburse", "x": "Funds were disbursed in two instalments.", "d": "Verbes"}, {"f": "garantir / sécuriser", "e": "to secure / to guarantee", "x": "The contract secures the market.", "d": "Verbes"}, {"f": "investir", "e": "to invest", "x": "The promoter invests 20% of the total cost.", "d": "Verbes"}, {"f": "dégager une marge", "e": "to generate a margin", "x": "The unit generates a 25% margin.", "d": "Verbes"}, {"f": "atteindre l'équilibre", "e": "to break even", "x": "The business breaks even in month fourteen.", "d": "Verbes"}, {"f": "élargir l'accès", "e": "to expand access", "x": "The product expands access to seasonal credit.", "d": "Verbes"}, {"f": "répondre à un besoin", "e": "to address a need", "x": "This addresses a clear market need.", "d": "Verbes"}, {"f": "combler un déficit", "e": "to bridge a gap", "x": "The guarantee fund bridges the collateral gap.", "d": "Verbes"}, {"f": "lever une contrainte", "e": "to remove a constraint", "x": "Storage removes the main constraint.", "d": "Verbes"}, {"f": "réduire les risques", "e": "to mitigate risks", "x": "Contract farming mitigates market risk.", "d": "Verbes"}, {"f": "anticiper", "e": "to anticipate", "x": "We anticipate a tighter lean season.", "d": "Verbes"}, {"f": "arbitrer", "e": "to make trade-offs", "x": "We had to make trade-offs between reach and depth.", "d": "Verbes"}, {"f": "recommander", "e": "to recommend", "x": "We recommend a phased approach.", "d": "Verbes"}, {"f": "préconiser", "e": "to advocate / to recommend", "x": "The report advocates a joint guarantee scheme.", "d": "Verbes"}, {"f": "souligner", "e": "to highlight / to stress", "x": "I would like to stress two points.", "d": "Verbes"}, {"f": "relever", "e": "to note / to point out", "x": "It should be noted that arrears rose in June.", "d": "Verbes"}, {"f": "faire ressortir", "e": "to show / to reveal", "x": "The analysis reveals a structural funding gap.", "d": "Verbes"}, {"f": "se traduire par", "e": "to result in", "x": "This results in higher transaction costs.", "d": "Verbes"}, {"f": "découler de", "e": "to stem from", "x": "The problem stems from weak record-keeping.", "d": "Verbes"}, {"f": "reposer sur", "e": "to rely on / to build on", "x": "The model relies on a committed buyer.", "d": "Verbes"}, {"f": "tenir compte de", "e": "to take into account", "x": "The plan takes seasonality into account.", "d": "Verbes"}, {"f": "s'inscrire dans", "e": "to fall within / to be part of", "x": "This falls within Output 3.", "d": "Verbes"}, {"f": "viser à", "e": "to aim at / to seek to", "x": "The activity seeks to improve loan quality.", "d": "Verbes"}, {"f": "contribuer à", "e": "to contribute to", "x": "The project contributes to rural job creation.", "d": "Verbes"}, {"f": "passer à l'échelle", "e": "to scale up", "x": "We plan to scale up next year.", "d": "Verbes"}, {"f": "pérenniser", "e": "to sustain / to embed", "x": "The tool must be embedded in the MFI's procedures.", "d": "Verbes"}, {"f": "capitaliser sur", "e": "to build on / to capitalise on", "x": "We build on the previous phase's results.", "d": "Verbes"}, {"f": "nouer un partenariat", "e": "to enter into a partnership", "x": "We entered into a partnership with two banks.", "d": "Verbes"}, {"f": "conclure un accord", "e": "to reach an agreement", "x": "We reached an agreement on the guarantee terms.", "d": "Verbes"}, {"f": "assurer le suivi", "e": "to follow up", "x": "I will follow up with the loan officer.", "d": "Verbes"}, {"f": "mener une enquête", "e": "to conduct a survey", "x": "We conducted a survey of 150 MSMEs.", "d": "Verbes"}, {"f": "dresser un état des lieux", "e": "to take stock", "x": "Let me take stock of where we stand.", "d": "Verbes"}, {"f": "déployer", "e": "to roll out", "x": "The product will be rolled out in six branches.", "d": "Verbes"}, {"f": "mettre en place", "e": "to set up", "x": "We set up a credit committee.", "d": "Verbes"}, {"f": "disposer de", "e": "to have (at one's disposal)", "x": "The cooperative has a 200-tonne warehouse.", "d": "Verbes"}, {"f": "valoriser", "e": "to add value to / to leverage", "x": "The unit adds value to local groundnut.", "d": "Verbes"}, {"f": "solliciter", "e": "to request / to approach", "x": "The company approached three lenders.", "d": "Verbes"}, {"f": "Ouvrir une présentation", "e": "Thank you for having me. I'll walk you through our work on rural finance.", "x": "Ton neutre, utilisable partout.", "d": "Réunion"}, {"f": "Annoncer le plan", "e": "I'll cover three points today: the context, the findings, and our recommendations.", "x": "Annoncer 3 points aide l'auditeur et vous cadre.", "d": "Réunion"}, {"f": "Poser le contexte", "e": "Let me start with some background on the region.", "x": "", "d": "Réunion"}, {"f": "Passer au point suivant", "e": "That brings me to my second point.", "x": "Transition simple et professionnelle.", "d": "Réunion"}, {"f": "Résumer en cours de route", "e": "Before I move on, let me summarise where we stand.", "x": "", "d": "Réunion"}, {"f": "Présenter un chiffre", "e": "The outstanding portfolio grew by 18% year on year.", "x": "« year on year » = en glissement annuel.", "d": "Réunion"}, {"f": "Situer une proportion", "e": "That represents roughly a third of the total portfolio.", "x": "", "d": "Réunion"}, {"f": "Citer la source", "e": "These figures come from our 2025 field survey.", "x": "", "d": "Réunion"}, {"f": "Nuancer un constat", "e": "The data suggests a trend, though it doesn't prove causality.", "x": "", "d": "Réunion"}, {"f": "Prudence sur un chiffre", "e": "I'd treat that figure with some caution.", "x": "", "d": "Réunion"}, {"f": "Annoncer une hypothèse", "e": "This is a deliberately conservative assumption.", "x": "", "d": "Réunion"}, {"f": "Exprimer un désaccord poli", "e": "I see it slightly differently, and here's why.", "x": "Plus diplomatique que « I disagree ».", "d": "Réunion"}, {"f": "Concéder puis objecter", "e": "I take your point, but the field data points the other way.", "x": "", "d": "Réunion"}, {"f": "Contester avec tact", "e": "I'm not sure the evidence supports that conclusion.", "x": "", "d": "Réunion"}, {"f": "Gagner du temps", "e": "That's a good question — let me think about it for a second.", "x": "Formule naturelle, très utilisée.", "d": "Réunion"}, {"f": "Se reprendre", "e": "Let me rephrase that.", "x": "", "d": "Réunion"}, {"f": "Chercher ses mots", "e": "How should I put this...", "x": "Bien mieux que le silence ou « euh ».", "d": "Réunion"}, {"f": "Faire répéter", "e": "Sorry, could you repeat that?", "x": "", "d": "Réunion"}, {"f": "Demander de ralentir", "e": "Could you speak a little more slowly, please?", "x": "Parfaitement acceptable en réunion.", "d": "Réunion"}, {"f": "Vérifier la compréhension", "e": "Just to make sure I understood correctly, you're asking about the guarantee fund?", "x": "", "d": "Réunion"}, {"f": "Reformuler l'autre", "e": "So if I understand you correctly, your concern is the repayment period.", "x": "", "d": "Réunion"}, {"f": "Clarifier un choix", "e": "Do you mean the cotton scheme or the rice scheme?", "x": "", "d": "Réunion"}, {"f": "Répondre directement", "e": "The short answer is yes, and let me explain why.", "x": "", "d": "Réunion"}, {"f": "Admettre une lacune", "e": "I don't have that figure with me — I'll send it after the meeting.", "x": "Honnête et professionnel.", "d": "Réunion"}, {"f": "Reporter une réponse", "e": "Let me come back to you on that by Friday.", "x": "", "d": "Réunion"}, {"f": "Faire avancer la réunion", "e": "Shall we move on to the next point?", "x": "", "d": "Réunion"}, {"f": "Mettre de côté un sujet", "e": "Let's park that and come back to it at the end.", "x": "", "d": "Réunion"}, {"f": "Chercher un accord", "e": "Can we agree on the next steps?", "x": "", "d": "Réunion"}, {"f": "Répartir les tâches", "e": "Who takes the lead on this?", "x": "", "d": "Réunion"}, {"f": "Conclure", "e": "To sum up, three things: the gap, the product, and the guarantee.", "x": "", "d": "Réunion"}, {"f": "Message clé", "e": "The key takeaway is that credit alone won't solve the problem.", "x": "", "d": "Réunion"}, {"f": "Ouvrir les questions", "e": "I'm happy to take any questions.", "x": "", "d": "Réunion"}, {"f": "Relancer par courriel", "e": "I'm following up on my email of 12 June.", "x": "", "d": "Réunion"}, {"f": "Joindre un document", "e": "Please find attached the concept note.", "x": "", "d": "Réunion"}, {"f": "Demander confirmation", "e": "Could you confirm by Friday whether this works for you?", "x": "", "d": "Réunion"}, {"f": "Proposer une option", "e": "Would you be open to a two-year term instead?", "x": "Formule de négociation très efficace.", "d": "Réunion"}, {"f": "Poser sa priorité", "e": "From our side, the priority is the repayment schedule.", "x": "", "d": "Réunion"}, {"f": "Remercier après réunion", "e": "Thank you for your time and for the clear feedback.", "x": "", "d": "Réunion"}, {"f": "Se présenter", "e": "I'm Pascal Zourmba, agri-finance and entrepreneurship expert with PADER III.", "x": "Phrase à automatiser une fois pour toutes.", "d": "Réunion"}, {"f": "Décrire son rôle", "e": "My role is to connect agricultural value chains with the right financial products.", "x": "", "d": "Réunion"}], "faux": [{"f": "Actuellement", "b": "actually", "g": "currently / at present", "w": "« Actually » signifie « en réalité »."}, {"f": "Éventuellement", "b": "eventually", "g": "possibly / if needed", "w": "« Eventually » signifie « finalement »."}, {"f": "Délai", "b": "delay", "g": "deadline / lead time / timeframe", "w": "« Delay » = retard."}, {"f": "Report (d'une réunion)", "b": "report", "g": "postponement", "w": "« Report » = rapport."}, {"f": "Formation", "b": "formation", "g": "training", "w": "« Formation » = formation géologique, mise en place."}, {"f": "Sensibilisation", "b": "sensibilisation", "g": "awareness-raising", "w": ""}, {"f": "Animateur (d'atelier)", "b": "animator", "g": "facilitator", "w": "« Animator » = dessinateur d'animation."}, {"f": "Assister à une réunion", "b": "to assist a meeting", "g": "to attend a meeting", "w": "« To assist » = aider."}, {"f": "Bénéficier de", "b": "to benefit of", "g": "to benefit from", "w": "Erreur de préposition très fréquente."}, {"f": "Demander", "b": "to demand", "g": "to ask (for) / to request", "w": "« To demand » = exiger."}, {"f": "Proposer", "b": "to propose", "g": "to suggest / to offer", "w": "« To propose » est très formel."}, {"f": "Contrôler", "b": "to control", "g": "to check / to monitor / to verify", "w": "« To control » = maîtriser, diriger."}, {"f": "Réaliser un projet", "b": "to realise a project", "g": "to carry out / to implement a project", "w": "« To realise » = se rendre compte."}, {"f": "Montant important", "b": "important amount", "g": "large / significant amount", "w": ""}, {"f": "Prix intéressant", "b": "interesting price", "g": "attractive / competitive price", "w": ""}, {"f": "Inconvénient", "b": "inconvenient", "g": "drawback / disadvantage", "w": "« Inconvenient » = peu pratique."}, {"f": "Notice (d'utilisation)", "b": "notice", "g": "instructions / user manual", "w": "« Notice » = avis, préavis."}, {"f": "Dispositif (d'appui)", "b": "device", "g": "scheme / mechanism / arrangement", "w": "« Device » = appareil."}, {"f": "Encadrement", "b": "framing", "g": "supervision / coaching", "w": ""}, {"f": "Suivi", "b": "following", "g": "follow-up / monitoring", "w": ""}, {"f": "Bilan (d'une action)", "b": "balance sheet", "g": "assessment / review / stocktaking", "w": "« Balance sheet » = bilan comptable uniquement."}, {"f": "Agenda (carnet)", "b": "agenda", "g": "diary / schedule", "w": "« Agenda » = ordre du jour."}, {"f": "Librairie", "b": "library", "g": "bookshop / bookstore", "w": "« Library » = bibliothèque."}, {"f": "Chance (occasion)", "b": "chance", "g": "opportunity", "w": "« Chance » = hasard, probabilité."}, {"f": "Compétence", "b": "competence", "g": "skill / expertise", "w": "« Competence » existe mais s'emploie peu."}, {"f": "Sensible (données)", "b": "sensible", "g": "sensitive", "w": "« Sensible » = raisonnable."}, {"f": "Pertinent", "b": "pertinent", "g": "relevant", "w": "« Relevant » est bien plus courant."}, {"f": "Apprécier (évaluer)", "b": "to appreciate", "g": "to assess / to evaluate", "w": "« To appreciate » = être reconnaissant."}, {"f": "Valoriser", "b": "to valorise", "g": "to add value to / to enhance / to leverage", "w": ""}, {"f": "Solliciter", "b": "to solicit", "g": "to request / to approach", "w": "« To solicit » a une connotation négative."}, {"f": "Actuel", "b": "actual", "g": "current / present", "w": "« Actual » = réel, effectif."}, {"f": "Prévision", "b": "prevision", "g": "forecast / projection", "w": ""}, {"f": "Subvention", "b": "subvention", "g": "grant / subsidy", "w": ""}, {"f": "Formation continue", "b": "continuous formation", "g": "in-service / continuing training", "w": ""}, {"f": "Responsable (personne)", "b": "responsible", "g": "manager / officer / head of", "w": "« Responsible » est un adjectif, pas un nom."}, {"f": "Expérimenté", "b": "experimented", "g": "experienced", "w": "« Experimented » = ayant fait des expériences."}, {"f": "Perspective (d'avenir)", "b": "perspective", "g": "outlook / prospects", "w": "« Perspective » = point de vue."}, {"f": "Occasion (opportunité)", "b": "occasion", "g": "opportunity", "w": "« Occasion » = circonstance, événement."}], "pitch": [{"t": "0:00", "s": 0, "b": "Accroche et cadrage", "g": "Situer le problème en une phrase forte et chiffrée.", "e": "In the Far North, fewer than one farmer in ten has access to formal credit. I'd like to show you how one value chain changes that."}, {"t": "0:30", "s": 30, "b": "Le problème", "g": "Décrire la contrainte, sa cause et son coût économique.", "e": "The constraint is not demand — it's collateral. Banks require security that smallholders simply don't have, so a viable business goes unfunded."}, {"t": "1:15", "s": 75, "b": "La solution / le modèle", "g": "Expliquer ce que fait le projet et pourquoi cela fonctionne.", "e": "Our approach links three parties: a committed offtaker, a partner MFI, and a guarantee fund. The offtake contract replaces physical collateral."}, {"t": "2:15", "s": 135, "b": "Les chiffres", "g": "Trois chiffres maximum, chacun justifié.", "e": "Three figures: a 28% gross margin, a break-even at 60 tonnes, and an internal rate of return of 22% over five years."}, {"t": "3:15", "s": 195, "b": "Le financement demandé", "g": "Montant, structure, usage des fonds.", "e": "We are seeking 45 million FCFA: 30% equity, 20% grant and 50% debt, mainly for storage and processing equipment."}, {"t": "4:00", "s": 240, "b": "L'impact", "g": "Emplois, genre, climat, territoire.", "e": "The unit creates 18 direct jobs, two thirds of them for women, and cuts post-harvest losses by half."}, {"t": "4:30", "s": 270, "b": "Conclusion et pas suivant", "g": "Une phrase de synthèse et une demande claire.", "e": "To sum up: a proven market, a de-risked structure and a bankable model. What we'd like from you today is a decision on the guarantee facility."}]};
+const CARDS = DATA.cards, FAUX = DATA.faux, PITCH = DATA.pitch;
+const DOMAINS = [...new Set(CARDS.map(c=>c.d))];
+const INTERVALS = [0,1,3,7,21];            // jours, boîtes de Leitner 1 à 5
+const DAY = 86400000;
+
+let state = {box:{}, due:{}, filter:"Tous", streak:0, last:null, done:0};
+let mem = null;
+
+const KEY = "agrifin-en-progress";
+async function readRaw(){
+  try{ const v = localStorage.getItem(KEY); if(v) return v; }catch(e){}
+  try{ const r = await window.storage.get(KEY); if(r && r.value) return r.value; }catch(e){}
+  return mem;
+}
+async function writeRaw(s){
+  try{ localStorage.setItem(KEY, s); return; }catch(e){}
+  try{ await window.storage.set(KEY, s); return; }catch(e){}
+  mem = s;
+}
+async function load(){
+  try{
+    const raw = await readRaw();
+    if(raw) state = Object.assign(state, JSON.parse(raw));
+  }catch(e){ /* première utilisation */ }
+  const t = today();
+  if(state.last !== t){
+    if(state.last === t-1) state.streak = (state.streak||0)+1; else state.streak = 1;
+    state.last = t; state.done = 0;
+  }
+  render();
+}
+function today(){ return Math.floor(Date.now()/DAY); }
+async function save(){
+  await writeRaw(JSON.stringify(state));
+  paintGauge();
+}
+
+function box(i){ return state.box[i] || 1; }
+function isDue(i){ return (state.due[i]||0) <= today(); }
+function pool(){
+  const f = state.filter;
+  return CARDS.map((c,i)=>({c,i})).filter(o=> f==="Tous" || o.c.d===f);
+}
+function duePool(){ return pool().filter(o=>isDue(o.i)); }
+function grade(i, ok){
+  const b = box(i);
+  const nb = ok ? Math.min(5, b+1) : 1;
+  state.box[i] = nb;
+  state.due[i] = today() + INTERVALS[nb-1];
+  state.done = (state.done||0)+1;
+  save();
+}
+function activeCount(){ return Object.values(state.box).filter(b=>b>=4).length; }
+function paintGauge(){
+  document.getElementById("gActive").textContent = activeCount();
+  document.getElementById("gTotal").textContent = CARDS.length;
+}
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function speak(txt){
+  try{
+    const u = new SpeechSynthesisUtterance(txt);
+    u.lang = "en-GB"; u.rate = .92;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  }catch(e){}
+}
+function norm(s){
+  return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+          .replace(/\(.*?\)/g,"").replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim();
+}
+function variants(en){
+  return en.split("/").map(x=>norm(x)).filter(Boolean);
+}
+
+/* ------------------------------------------------------------------ vues */
+let tab = "rev", cur = null, shown = false, answered = false;
+const V = () => document.getElementById("view");
+const TITLES = {
+  rev:["Réviser","Carte à carte, à voix haute"],
+  quiz:["Quiz","Reconnaître le bon terme"],
+  ecrire:["Écrire","Produire le terme sans aide"],
+  pitch:["Pitch","Présenter un projet en 5 minutes"],
+  prog:["Suivi","Où en est le lexique actif"]
+};
+
+function buildChips(){
+  const box = document.getElementById("chips");
+  box.innerHTML = "";
+  if(tab==="pitch"||tab==="prog"){ box.classList.add("hidden"); return; }
+  box.classList.remove("hidden");
+  ["Tous",...DOMAINS].forEach(d=>{
+    const b = document.createElement("button");
+    b.className = "chip"; b.textContent = d;
+    b.setAttribute("aria-pressed", state.filter===d ? "true":"false");
+    b.onclick = ()=>{ state.filter = d; cur=null; save(); render(); };
+    box.appendChild(b);
+  });
+}
+
+function render(){
+  document.getElementById("title").textContent = TITLES[tab][0];
+  document.getElementById("subtitle").textContent = TITLES[tab][1];
+  buildChips(); paintGauge();
+  ({rev:viewRev, quiz:viewQuiz, ecrire:viewEcrire, pitch:viewPitch, prog:viewProg})[tab]();
+}
+
+/* --- réviser --- */
+function viewRev(){
+  const d = duePool();
+  if(!d.length){
+    V().innerHTML = `<div class="card center">
+      <div class="eyebrow">Série terminée</div>
+      <p class="fr" style="font-size:19px">Rien à revoir ici aujourd'hui.</p>
+      <p class="mini">Les cartes réapparaissent selon leur boîte : 1 jour, 3 jours, 1 semaine, puis 3 semaines. Changez de domaine ou passez au quiz.</p>
+      </div>`;
+    return;
+  }
+  if(!cur || !d.find(o=>o.i===cur.i)) cur = pick(d);
+  const {c,i} = cur;
+  V().innerHTML = `<div class="card">
+      <div class="eyebrow">${c.d} <span class="dot">·</span> boîte ${box(i)} sur 5</div>
+      <p class="fr">${c.f}</p>
+      ${shown ? `<div class="rule"></div>
+        <p class="en">${c.e}</p>
+        ${c.x?`<p class="ex">${c.x}</p>`:""}
+        <button class="speak" id="sp">▸ Écouter la prononciation</button>` : ""}
+    </div>
+    ${shown
+      ? `<div class="row">
+           <button class="btn again" id="ko">Pas su</button>
+           <button class="btn good" id="ok">Su</button>
+         </div>
+         <p class="note">Ne cochez « Su » que si vous l'avez dit à voix haute.</p>`
+      : `<div class="row"><button class="btn" id="show">Dire à voix haute, puis afficher</button></div>`}
+    <p class="count">${d.length} carte${d.length>1?"s":""} à revoir · ${state.done||0} traitée${(state.done||0)>1?"s":""} aujourd'hui</p>`;
+  if(shown){
+    document.getElementById("sp").onclick = ()=>speak(c.x || c.e);
+    document.getElementById("ok").onclick = ()=>{ grade(i,true); shown=false; cur=null; render(); };
+    document.getElementById("ko").onclick = ()=>{ grade(i,false); shown=false; cur=null; render(); };
+  }else{
+    document.getElementById("show").onclick = ()=>{ shown=true; render(); };
+  }
+}
+
+/* --- quiz --- */
+function viewQuiz(){
+  const p = pool();
+  if(!cur){
+    answered = false;
+    const useFaux = FAUX.length && Math.random() < .22 && state.filter==="Tous";
+    if(useFaux){
+      const f = pick(FAUX);
+      const third = pick(FAUX.filter(x=>x.g!==f.g && x.g!==f.b)).g;
+      cur = {type:"faux", f, opts: shuffle([f.g, f.b, third])};
+    }else{
+      const o = pick(p);
+      const others = p.filter(x=>x.i!==o.i);
+      const wrong = shuffle(others).slice(0,3).map(x=>x.c.e);
+      cur = {type:"std", o, opts: shuffle([o.c.e, ...wrong])};
+    }
+  }
+  if(cur.type==="faux"){
+    const f = cur.f;
+    V().innerHTML = `<div class="card">
+        <div class="eyebrow">Piège classique <span class="dot">·</span> faux ami</div>
+        <p class="fr">${f.f}</p>
+        <p class="mini">Quel terme employer en anglais professionnel ?</p>
+        <div id="opts"></div>
+        <div id="verdict"></div>
+      </div>
+      <div class="row"><button class="btn ghost" id="next">Suivant</button></div>`;
+    fillOpts(cur.opts, f.g, ()=>{
+      document.getElementById("verdict").innerHTML =
+        `<div class="verdict">À éviter : <b>${f.b}</b>. ${f.w||""}</div>`;
+    });
+  }else{
+    const c = cur.o.c;
+    V().innerHTML = `<div class="card">
+        <div class="eyebrow">${c.d}</div>
+        <p class="fr">${c.f}</p>
+        <div id="opts"></div>
+        <div id="verdict"></div>
+      </div>
+      <div class="row"><button class="btn ghost" id="next">Suivant</button></div>`;
+    fillOpts(cur.opts, c.e, ok=>{
+      grade(cur.o.i, ok);
+      if(c.x) document.getElementById("verdict").innerHTML = `<div class="verdict">${c.x}</div>`;
+    });
+  }
+  document.getElementById("next").onclick = ()=>{ cur=null; render(); };
+}
+function fillOpts(opts, right, after){
+  const host = document.getElementById("opts");
+  opts.forEach(o=>{
+    const b = document.createElement("button");
+    b.className = "opt"; b.textContent = o;
+    b.onclick = ()=>{
+      if(answered) return; answered = true;
+      const ok = o===right;
+      [...host.children].forEach(ch=>{
+        if(ch.textContent===right) ch.classList.add("ok");
+        else if(ch===b) ch.classList.add("ko");
+      });
+      speak(right); after(ok);
+    };
+    host.appendChild(b);
+  });
+}
+function shuffle(a){ a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+/* --- écrire --- */
+function viewEcrire(){
+  const p = pool();
+  if(!cur){ cur = {o:pick(p)}; answered=false; }
+  const c = cur.o.c;
+  V().innerHTML = `<div class="card">
+      <div class="eyebrow">${c.d} <span class="dot">·</span> production écrite</div>
+      <p class="fr">${c.f}</p>
+      <input type="text" id="inp" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="en anglais…">
+      <div id="verdict"></div>
+    </div>
+    <div class="row"><button class="btn" id="check">Vérifier</button></div>
+    <p class="note">Les variantes séparées par « / » sont toutes acceptées.</p>`;
+  const inp = document.getElementById("inp");
+  inp.focus();
+  const check = ()=>{
+    if(answered){ cur=null; render(); return; }
+    answered = true;
+    const v = norm(inp.value);
+    const ok = variants(c.e).some(x=> x===v || (v.length>3 && x.startsWith(v) && v.length>=x.length-2));
+    grade(cur.o.i, ok);
+    document.getElementById("verdict").innerHTML =
+      `<div class="verdict" style="color:${ok?"var(--viridian)":"var(--alert)"};font-weight:600">${ok?"Correct":"Terme attendu"}</div>
+       <p class="en" style="font-size:22px">${c.e}</p>${c.x?`<p class="ex">${c.x}</p>`:""}`;
+    document.getElementById("check").textContent = "Suivant";
+    speak(c.e);
+  };
+  document.getElementById("check").onclick = check;
+  inp.onkeydown = e=>{ if(e.key==="Enter") check(); };
+}
+
+/* --- pitch --- */
+let pt = {t:0, run:false, id:null};
+function viewPitch(){
+  const total = 300;
+  V().innerHTML = `<div class="card">
+      <div class="dial">
+        <svg width="186" height="186" viewBox="0 0 186 186">
+          <circle cx="93" cy="93" r="82" fill="none" stroke="var(--line)" stroke-width="9"/>
+          <circle id="arc" cx="93" cy="93" r="82" fill="none" stroke="var(--viridian)" stroke-width="9"
+                  stroke-linecap="round" stroke-dasharray="515" stroke-dashoffset="515"/>
+        </svg>
+        <div class="t"><div class="num" id="clock">5:00</div><div class="lbl" id="phase">prêt</div></div>
+      </div>
+      <div class="row">
+        <button class="btn small" id="go">Démarrer</button>
+        <button class="btn small ghost" id="rst">Remettre à zéro</button>
+      </div>
+      <div class="blocks" id="blocks"></div>
+    </div>
+    <p class="note">Enregistrez-vous, puis réécoutez : c'est la réécoute qui corrige, pas la répétition.</p>`;
+  const host = document.getElementById("blocks");
+  PITCH.forEach((b,k)=>{
+    const el = document.createElement("div");
+    el.className = "blk"; el.id = "blk"+k;
+    el.innerHTML = `<div class="tm">${b.t}</div><div><div class="bt">${b.b}</div>
+                    <div class="bg">${b.g}</div><div class="be">${b.e}</div></div>`;
+    host.appendChild(el);
+  });
+  document.getElementById("go").onclick = toggle;
+  document.getElementById("rst").onclick = ()=>{ stop(); pt.t=0; paintPitch(); };
+  paintPitch();
+}
+function toggle(){
+  if(pt.run){ stop(); } else {
+    pt.run = true; document.getElementById("go").textContent = "Pause";
+    pt.id = setInterval(()=>{ pt.t++; if(pt.t>=300){ stop(); pt.t=300; } paintPitch(); }, 1000);
+  }
+}
+function stop(){
+  pt.run=false; clearInterval(pt.id);
+  const g = document.getElementById("go"); if(g) g.textContent = pt.t?"Reprendre":"Démarrer";
+}
+function paintPitch(){
+  const left = 300 - pt.t;
+  const cl = document.getElementById("clock"); if(!cl) return;
+  cl.textContent = Math.floor(left/60)+":"+String(left%60).padStart(2,"0");
+  document.getElementById("arc").setAttribute("stroke-dashoffset", 515 - 515*(pt.t/300));
+  let k = 0;
+  PITCH.forEach((b,j)=>{ if(pt.t >= b.s) k = j; });
+  document.getElementById("phase").textContent = pt.t ? PITCH[k].b : "prêt";
+  PITCH.forEach((b,j)=>{
+    const el = document.getElementById("blk"+j);
+    if(el) el.classList.toggle("on", pt.t>0 && j===k);
+  });
+}
+
+/* --- suivi --- */
+function viewProg(){
+  const rows = DOMAINS.map(d=>{
+    const idx = CARDS.map((c,i)=>({c,i})).filter(o=>o.c.d===d);
+    const act = idx.filter(o=>box(o.i)>=4).length;
+    return {d, n:idx.length, act};
+  });
+  const tot = rows.reduce((s,r)=>s+r.n,0), ta = rows.reduce((s,r)=>s+r.act,0);
+  V().innerHTML = `<div class="card">
+      <div class="eyebrow">Lexique en usage actif</div>
+      <p class="fr" style="font-size:34px;color:var(--viridian-dark)">${Math.round(ta/tot*100)}<span style="font-size:19px">%</span></p>
+      <div class="bar"><i style="width:${(ta/tot*100).toFixed(1)}%"></i></div>
+      <p class="mini">${ta} termes sur ${tot} atteignent la boîte 4 ou 5. Cible à douze semaines : 40 %.</p>
+      <div class="rule"></div>
+      <div class="eyebrow">Régularité</div>
+      <p class="mini" style="margin-top:6px"><b style="color:var(--ink);font-size:15px">${state.streak||1} jour${(state.streak||1)>1?"s":""} d'affilée</b> · ${state.done||0} carte${(state.done||0)>1?"s":""} traitée${(state.done||0)>1?"s":""} aujourd'hui</p>
+    </div>
+    <div class="card" style="margin-top:12px">
+      <div class="eyebrow">Par domaine</div>
+      ${rows.map(r=>`<div class="prow">
+        <div class="h"><b>${r.d}</b><span>${r.act} / ${r.n}</span></div>
+        <div class="bar"><i style="width:${(r.act/r.n*100).toFixed(1)}%"></i></div>
+      </div>`).join("")}
+    </div>
+    <p class="note">Une carte entre en usage actif après quatre rappels réussis espacés.</p>`;
+}
+
+/* --- navigation --- */
+document.querySelectorAll("nav button").forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-current","false"));
+    b.setAttribute("aria-current","true");
+    stop(); tab = b.dataset.tab; cur = null; shown = false; answered = false;
+    window.scrollTo(0,0); render();
+  };
+});
+load();
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load", ()=> navigator.serviceWorker.register("sw.js").catch(()=>{}));
+}
+</script>
